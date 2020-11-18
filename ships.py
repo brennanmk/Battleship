@@ -12,7 +12,6 @@ class ship:
    def setYLoc(self, xLoc):
       self.xLoc = xLoc
 
-
    def setYLoc(self, yLoc):
       self.yLoc = yLoc
 
