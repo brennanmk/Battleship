@@ -1,5 +1,8 @@
+
+
 class ship:
-   def __init__(self):
+   def __init__(self, shipName):
+      self.name = shipName
       self.Board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],]
 
@@ -30,45 +33,52 @@ class ship:
          print("Your value entered is out of bounds")
          hit()
 
- 
+   def getName(self):
+      return self.name
 
-   def getYLoc(self):
+   def getSize(self):
       return self.size
 
-   def getYLoc(self):
-      return self.size
-
-   def setYLoc(self, xLoc):
-      self.xLoc = xLoc
-
-   def setYLoc(self, yLoc):
-      self.yLoc = yLoc
 
 
 class carrier(ship):
-   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
       self.ShipRowStart = RowStart
       self.ShipCollumnStart = CollumnStart
       self.ShipRowEnd = RowEnd
       self.ShipCollumnEnd = CollumnEnd
       self.size = 5
-      ship.__init__(self)
+      self.created = creatingShip
+      ship.__init__(self, "Carrier")
    
+   def setAll(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+      self.ShipRowStart = RowStart
+      self.ShipCollumnStart = CollumnStart
+      self.ShipRowEnd = RowEnd
+      self.ShipCollumnEnd = CollumnEnd
+
+   def printLocation(self):
+      print("  %s is at location (%s,%s) to (%s, %s)." %(getName(), self.ShipRowStart, self.ShipCollumnStart, self.ShipRowEnd, self.ShipCollumnEnd))
+
    def getSize(self):
       return self.size
 
    def setSize(self, size):
       self.size = size
+   
+   def isCreated(self):
+      return self.created
 
 
 class battleShip(ship):
-   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
       self.ShipRowStart = RowStart
       self.ShipCollumnStart = CollumnStart
       self.ShipRowEnd = RowEnd
       self.ShipCollumnEnd = CollumnEnd
       self.size = 4
-      ship.__init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd)
+      self.created = creatingShip
+      ship.__init__(self, "BattleShip")
    
    def getSize(self):
       return self.size
@@ -76,15 +86,18 @@ class battleShip(ship):
    def setSize(self, size):
       self.size = size
 
+   def isCreated(self):
+      return self.created
 
 class cruiser(ship):
-   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
       self.ShipRowStart = RowStart
       self.ShipCollumnStart = CollumnStart
       self.ShipRowEnd = RowEnd
       self.ShipCollumnEnd = CollumnEnd
       self.size = 3
-      ship.__init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd)
+      self.created = creatingShip
+      ship.__init__(self, "Cruiser")
    
    def getSize(self):
       return self.size
@@ -94,13 +107,14 @@ class cruiser(ship):
 
 
 class submarine(ship):
-   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
       self.ShipRowStart = RowStart
       self.ShipCollumnStart = CollumnStart
       self.ShipRowEnd = RowEnd
       self.ShipCollumnEnd = CollumnEnd
       self.size = 3
-      ship.__init__(self, ShipRowStart, ShipCollumnStart, ShipRowEnd, ShipCollumnEnd)
+      self.created = creatingShip
+      ship.__init__(self, "Submarine")
    
    def getSize(self):
       return self.size
@@ -110,13 +124,14 @@ class submarine(ship):
 
 
 class destroyer(ship):
-   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+   def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
       self.ShipRowStart = RowStart
       self.ShipCollumnStart = CollumnStart
       self.ShipRowEnd = RowEnd
       self.ShipCollumnEnd = CollumnEnd
       self.size = 2
-      ship.__init__(self, ShipRowStart, ShipCollumnStart, ShipRowEnd, ShipCollumnEnd)
+      self.created = creatingShip
+      ship.__init__(self, "Destroyer")
 
    def getSize(self):
       return self.size
