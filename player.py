@@ -71,32 +71,44 @@ class player: #player class creates a player with its own board and ship locatio
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
                         while i > ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
-                            i = i-1
+                            if self.board[i][ShipCollumnEnd] == 4:
+                                raise Exception
+                            else:
+                                self.board[i][ShipCollumnEnd] = 4
+                                i = i-1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart + ship.getSize()
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
                         while i < ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
-                            i = i+1
+                            if self.board[i][ShipCollumnEnd] == 4:
+                                raise Exception
+                            else:
+                                self.board[i][ShipCollumnEnd] = 4
+                                i = i+1
 
                     elif shipOrientation.lower() == "left":
                         ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart - ship.getSize()
                         i = ShipCollumnStart
                         while i > ShipCollumnEnd:
-                            self.board[ShipRowEnd][i] = 4
-                            i = i-1
+                            if self.board[ShipRowEnd][i] == 4:
+                                raise Exception
+                            else:
+                                self.board[ShipRowEnd][i] = 4
+                                i = i-1
 
                     elif shipOrientation.lower() == "right":
                         ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart + ship.getSize()
                         i = ShipCollumnStart
                         while i < ShipCollumnEnd:
-                            self.board[ShipRowEnd][i] = 4
-                            i = i+1
+                            if self.board[ShipRowEnd][i] == 4:
+                                raise Exception
+                            else:
+                                self.board[ShipRowEnd][i] = 4
+                                i = i+1
 
                     else: #for invalid ship orientation warn the player and then reset the function
                         print("Invalid Ship Location")
