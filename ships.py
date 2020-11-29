@@ -1,13 +1,16 @@
-class ship:
-    def __init__(self, shipName):
+class ship: #parent ship function
+    def __init__(self, shipName): #constructor takesin ship name as a parameter
         self.name = shipName
 
-    def getName(self):
+    def getName(self): #get function for ship name
         return self.name
 
+    def setName(self, shipName): #set function for ship name
+        self.name = shipName
 
-class carrier(ship):
-    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False):
+
+class carrier(ship): #carrier is a class with the parent class ship
+    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for carrier class
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
@@ -16,28 +19,28 @@ class carrier(ship):
         self.created = creatingShip
         ship.__init__(self, "Carrier")
 
-    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd): #function to set the ships posistion
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
         self.ShipCollumnEnd = CollumnEnd
 
-    def printLocation(self):
+    def printLocation(self): #function to display the ships location
         print("  %s is at location (%s,%s) to (%s, %s)." % (
             self.name, self.ShipCollumnStart, self.ShipRowStart, self.ShipCollumnEnd, self.ShipRowEnd))
 
-    def getSize(self):
+    def getSize(self): #function to return the ship size
         return self.size
 
-    def setSize(self, size):
+    def setSize(self, size): #function to change the ship size
         self.size = size
 
-    def isCreated(self):
+    def isCreated(self): #function to determine if the ship has been created
         return self.created
 
 
-class battleShip(ship):
-    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False):
+class battleShip(ship): #battleShip is a class with the parent class ship
+    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for battleShip class
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
@@ -46,28 +49,28 @@ class battleShip(ship):
         self.created = creatingShip
         ship.__init__(self, "BattleShip")
 
-    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd): #function to set the ships posistion
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
         self.ShipCollumnEnd = CollumnEnd
 
-    def printLocation(self):
+    def printLocation(self): #function to display the ships location
         print("  %s is at location (%s,%s) to (%s, %s)." % (
             self.name, self.ShipCollumnStart, self.ShipRowStart, self.ShipCollumnEnd, self.ShipRowEnd))
 
-    def getSize(self):
+    def getSize(self): #function to display the ship size
         return self.size
 
-    def setSize(self, size):
+    def setSize(self, size): #function to change the ship size
         self.size = size
 
-    def isCreated(self):
+    def isCreated(self): #function to determine if the ship has been created
         return self.created
 
 
-class cruiser(ship):
-    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False):
+class cruiser(ship): #cruiser is a class with the parent class ship
+    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for cruiser class
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
@@ -76,28 +79,28 @@ class cruiser(ship):
         self.created = creatingShip
         ship.__init__(self, "Cruiser")
 
-    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd): #function to set the ships posistion
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
         self.ShipCollumnEnd = CollumnEnd
 
-    def printLocation(self):
+    def printLocation(self): #function to dispaly the ship location
         print("  %s is at location (%s,%s) to (%s, %s)." % (
             self.name, self.ShipCollumnStart, self.ShipRowStart, self.ShipCollumnEnd, self.ShipRowEnd))
 
-    def getSize(self):
+    def getSize(self): #function to return ship size
         return self.size
 
-    def setSize(self, size):
+    def setSize(self, size): #function to change ship size
         self.size = size
 
-    def isCreated(self):
+    def isCreated(self): #function to return the created boolean
         return self.created
 
 
-class submarine(ship):
-    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False):
+class submarine(ship): #submarine is a class with the parent class ship
+    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for the submarine class
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
@@ -106,28 +109,28 @@ class submarine(ship):
         self.created = creatingShip
         ship.__init__(self, "Submarine")
 
-    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd): #function to set the ships location
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
         self.ShipCollumnEnd = CollumnEnd
 
-    def printLocation(self):
+    def printLocation(self): #function to display the ships location
         print("  %s is at location (%s,%s) to (%s, %s)." % (
             self.name, self.ShipCollumnStart, self.ShipRowStart, self.ShipCollumnEnd, self.ShipRowEnd))
 
-    def getSize(self):
+    def getSize(self): #function to return the ships size
         return self.size
 
-    def setSize(self, size):
+    def setSize(self, size): #function to change the ships size
         self.size = size
 
-    def isCreated(self):
+    def isCreated(self): #function to return the created boolean
         return self.created
 
 
-class destroyer(ship):
-    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False):
+class destroyer(ship): #destroyer is a class with the parent class ship
+    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for the destroyed class
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
@@ -136,21 +139,21 @@ class destroyer(ship):
         self.created = creatingShip
         ship.__init__(self, "Destroyer")
 
-    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd):
+    def setShipPos(self, RowStart, CollumnStart, RowEnd, CollumnEnd): #function to set the ships location
         self.ShipRowStart = RowStart
         self.ShipCollumnStart = CollumnStart
         self.ShipRowEnd = RowEnd
         self.ShipCollumnEnd = CollumnEnd
 
-    def printLocation(self):
+    def printLocation(self): #function to display the ships location
         print("  %s is at location (%s,%s) to (%s, %s)." % (
             self.name, self.ShipCollumnStart, self.ShipRowStart, self.ShipCollumnEnd, self.ShipRowEnd))
 
-    def getSize(self):
+    def getSize(self): #function to return ship size
         return self.size
 
-    def setSize(self, size):
+    def setSize(self, size): #function to change ship size
         self.size = size
 
-    def isCreated(self):
+    def isCreated(self): #function to return created boolean value
         return self.created
