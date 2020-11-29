@@ -1,2 +1,2 @@
-# FinalProject
+# Battleship Game
 OOPs Final Project
