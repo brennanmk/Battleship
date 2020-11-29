@@ -11,7 +11,7 @@ class player:
         self.playerArsenal.append(ships.submarine(0,0,0,0))
         self.playerArsenal.append(ships.destroyer(0,0,0,0))
 
-    def printMap(self):
+    def printEnemyMap(self):
       print("\n-------------------------------------")
       for row in self.board:
          for collumns in row:
@@ -23,6 +23,19 @@ class player:
                print("%s  " % ("|"), end = " ")
          print("\n-------------------------------------")
 
+    def printPlayerMap(self):
+        print("\n-------------------------------------")
+        for row in self.board:
+            for collumns in row:
+                if collumns == 1:
+                    print("%s X" % ("|"), end = " ")
+                elif collumns == 2:
+                    print("%s !" % ("|"), end = " ")
+                elif collumns == 4:
+                    print("%s -" % ("|"), end = " ")
+                else:
+                    print("%s  " % ("|"), end = " ")
+            print("\n-------------------------------------")
 
     def hit(self):
       row = input("Enter Row To Hit: ")
@@ -44,7 +57,8 @@ class player:
     def createShip(self):
         try:
             for ship in self.playerArsenal:
-                if ship.isCreated() == Fase:
+                self.printPlayerMap()
+                if ship.isCreated() == False:
                     ShipRowStart = int(input("Enter Row For Start Posistion For %s: " % (ship.getName())))
                     ShipCollumnStart = int(input("Enter Collumn For Start Position For %s: " % (ship.getName())))
                     shipOrientation = input("Enter Orientation for %s (up down left or right): " % (ship.getName()))
@@ -54,7 +68,7 @@ class player:
                         i = ShipRowStart
                         while i < ShipRowEnd:
                             self.board[i][ShipCollumnEnd] = 4
-                            i+1
+                            i = i+1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart - ship.getSize()
@@ -62,7 +76,7 @@ class player:
                         i = ShipRowStart
                         while i > ShipRowEnd:
                             self.board[i][ShipCollumnEnd] = 4
-                            i-1
+                            i = i-1
 
                     elif shipOrientation.lower() == "left":
                         ShipRowEnd = ShipRowStart
@@ -70,7 +84,7 @@ class player:
                         i = ShipCollumnStart
                         while i > ShipCollumnStart:
                             self.board[ShipRowEnd][i] = 4
-                            i-1
+                            i = i-1
 
                     elif shipOrientation.lower() == "right":
                         ShipRowEnd = ShipRowStart
@@ -78,13 +92,13 @@ class player:
                         i = ShipCollumnStart
                         while i < ShipRowEnd:
                             self.board[ShipRowEnd][i] = 4
-                            i+1
+                            i = i+1
 
                     else:
                         print("Invalid Ship Location")    
                         createShip()
 
-                    ship.setShip(ShipRowStart, ShipCollumnStart, ShipRowEnd, ShipCollumnEnd)   #set ship location inside of ships.py
+                    ship.setShipPos(ShipRowStart, ShipCollumnStart, ShipRowEnd, ShipCollumnEnd)   #set ship location inside of ships.py
                     ship.printLocation() #print ship location for user to see
 
                 else:

@@ -1,6 +1,9 @@
 class ship:
    def __init__(self, shipName):
       self.name = shipName
+   
+   def getName(self):
+      return self.name
 
 class carrier(ship):
    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
@@ -88,6 +91,9 @@ class cruiser(ship):
    def setSize(self, size):
       self.size = size
 
+   def isCreated(self):
+      return self.created
+
 
 class submarine(ship):
    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
@@ -113,6 +119,9 @@ class submarine(ship):
    def setSize(self, size):
       self.size = size
 
+   def isCreated(self):
+      return self.created
+
 
 class destroyer(ship):
    def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip = False):
@@ -137,3 +146,6 @@ class destroyer(ship):
 
    def setSize(self, size):
       self.size = size
+
+   def isCreated(self):
+      return self.created
