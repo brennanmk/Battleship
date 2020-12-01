@@ -1,7 +1,14 @@
 class ship: #parent ship function
-    def __init__(self, shipName): #constructor takesin ship name as a parameter
+    def __init__(self, shipName, isSunk = False): #constructor takesin ship name as a parameter
         self.name = shipName
+        self.sunk = isSunk
 
+    def getSunk(self):
+        return self.sunk
+
+    def setSunk(self, isSunk):
+        self.sunk = isSunk
+        
     def getName(self): #get function for ship name
         return self.name
 
