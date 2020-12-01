@@ -1,6 +1,6 @@
 from player import player
 
-if __name__=="__main__":
+def main():
    player1 = player()
    player2 = player()
 
@@ -27,3 +27,7 @@ if __name__=="__main__":
       print("\n\nPlayer 1 Won!")
    else:
       print("\n\nPlayer 2 Won!")
+
+
+if __name__=="__main__":
+   main()
