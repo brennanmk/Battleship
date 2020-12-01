@@ -38,6 +38,18 @@ class carrier(ship): #carrier is a class with the parent class ship
     def isCreated(self): #function to determine if the ship has been created
         return self.created
 
+    def getStartColumn(self):
+        return self.ShipCollumnStart
+
+    def getStartRow(self):
+        return self.ShipRowStart
+
+    def getEndColumn(self):
+        return self.ShipCollumnEnd
+
+    def getEndRow(self):
+        return self.ShipRowEnd
+
 
 class battleShip(ship): #battleShip is a class with the parent class ship
     def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for battleShip class
@@ -67,6 +79,18 @@ class battleShip(ship): #battleShip is a class with the parent class ship
 
     def isCreated(self): #function to determine if the ship has been created
         return self.created
+    
+    def getStartColumn(self):
+        return self.ShipCollumnStart
+
+    def getStartRow(self):
+        return self.ShipRowStart
+
+    def getEndColumn(self):
+        return self.ShipCollumnEnd
+
+    def getEndRow(self):
+        return self.ShipRowEnd
 
 
 class cruiser(ship): #cruiser is a class with the parent class ship
@@ -98,6 +122,18 @@ class cruiser(ship): #cruiser is a class with the parent class ship
     def isCreated(self): #function to return the created boolean
         return self.created
 
+    def getStartColumn(self):
+        return self.ShipCollumnStart
+
+    def getStartRow(self):
+        return self.ShipRowStart
+
+    def getEndColumn(self):
+        return self.ShipCollumnEnd
+
+    def getEndRow(self):
+        return self.ShipRowEnd
+
 
 class submarine(ship): #submarine is a class with the parent class ship
     def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for the submarine class
@@ -128,6 +164,18 @@ class submarine(ship): #submarine is a class with the parent class ship
     def isCreated(self): #function to return the created boolean
         return self.created
 
+    def getStartColumn(self):
+        return self.ShipCollumnStart
+
+    def getStartRow(self):
+        return self.ShipRowStart
+
+    def getEndColumn(self):
+        return self.ShipCollumnEnd
+
+    def getEndRow(self):
+        return self.ShipRowEnd
+
 
 class destroyer(ship): #destroyer is a class with the parent class ship
     def __init__(self, RowStart, CollumnStart, RowEnd, CollumnEnd, creatingShip=False): #constructor for the destroyed class
@@ -157,3 +205,15 @@ class destroyer(ship): #destroyer is a class with the parent class ship
 
     def isCreated(self): #function to return created boolean value
         return self.created
+
+    def getStartColumn(self):
+        return self.ShipCollumnStart
+
+    def getStartRow(self):
+        return self.ShipRowStart
+
+    def getEndColumn(self):
+        return self.ShipCollumnEnd
+
+    def getEndRow(self):
+        return self.ShipRowEnd

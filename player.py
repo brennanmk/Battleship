@@ -55,6 +55,38 @@ class player: #player class creates a player with its own board and ship locatio
             print("Your value entered is out of bounds")
             hit()
 
+    def isSunk(self):
+        shipSunk = 0
+
+        for ship in self.playerArsenal:
+            CollumnStart = ship.getStartColumn()
+            CollumnEnd = ship.getEndColumn()
+            RowStart = ship.getStartRow()
+            RowEnd = ship.getEndRow()
+            i = 0
+            
+            if (CollumnStart - CollumnEnd) == 0:
+                while Board[RowStart + i][CollumnStart] == 2:
+                    i += 1
+                    if (RowStart + i) == RowEnd:
+                        shipSunk += shipSunk
+                        print(ship.getName() + "is sunk!")
+                        break
+            else:
+                while Board[RowStart][CollumnStart + i] == 2:
+                    i += 1
+                    if (CollumnStart + i) == CollumnEnd:
+                        print(ship.getName() + "is sunk!")
+                        shipSunk += shipSunk
+                        break
+
+
+        print("You Lost!") if shipSunk == 5
+
+
+
+
+
     def createShip(self): #function to populate the player board
         try: #try catch to reset the board incase the player enters overlapping ships
             for ship in self.playerArsenal: #for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
