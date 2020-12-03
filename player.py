@@ -1,5 +1,5 @@
 import ships
-
+import bot
 
 class player:  # player class creates a player with its own board and ship locations
     def __init__(self):  # blank constructor for player class
@@ -21,7 +21,7 @@ class player:  # player class creates a player with its own board and ship locat
 
     # function to print the map visible to the enemy player (ship locations not included)
     def printEnemyMap(self):
-        print("\n-------------------------------------")
+        print("\n-----------------------------------------")
         for row in self.board:
             for collumns in row:
                 if collumns == 1:
@@ -30,7 +30,8 @@ class player:  # player class creates a player with its own board and ship locat
                     print("%s !" % ("|"), end=" ")
                 else:
                     print("%s  " % ("|"), end=" ")
-            print("\n-------------------------------------")
+            print("|")
+            print("-----------------------------------------")
 
     # function to print the map visible to the enemy player (ship locations included)
     def printPlayerMap(self):
@@ -53,7 +54,8 @@ class player:  # player class creates a player with its own board and ship locat
         row = int(input("Enter Row To Hit: "))
         collumn = int(input("Enter Collumn To Hit: "))
         try:  # try catch to determine if the player strikes an out of bounds spot
-            if self.board[row][collumn] == 4:  # check to see if the posistion hit is housing a ship
+            # check to see if the posistion hit is housing a ship
+            if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
                 print("Enemy ship hit!")
@@ -63,6 +65,28 @@ class player:  # player class creates a player with its own board and ship locat
                 print("Missed enemy target!")
             else:  # make sure the player has not attacked the spot previously
                 print("You already attacked this spot")
+                self.hit()
+
+        except Exception:
+            print("Your value entered is out of bounds")
+            self.hit()
+
+    def botHit(self):  # function that enemy player calls to hit a posistion on the players board
+        # ask enemy to enter a location to attack
+        playerBot = bot.bot()
+        row = playerBot.generateHit()["row"]
+        collumn = bot.bot.generateHit()["collumn"]
+        try:  # try catch to determine if the player strikes an out of bounds spot
+            # check to see if the posistion hit is housing a ship
+            if self.board[row][collumn] == 4:
+                # set the board posistion to 2 if the enemy hit a ship
+                self.board[row][collumn] = 2
+                print("Enemy hit you ship")
+            elif self.board[row][collumn] == 0:
+                # set the board posistion to 1 if the enemy missed a ship
+                self.board[row][collumn] = 1
+                print("Enemy missed your ships!")
+            else:  # make sure the player has not attacked the spot previously
                 self.hit()
 
         except Exception:
@@ -80,7 +104,6 @@ class player:  # player class creates a player with its own board and ship locat
                 RowEnd = ship.getEndRow()
                 i = 0
 
-                
                 if (CollumnStart - CollumnEnd) == 0:
                     while self.board[RowStart + i][CollumnStart] == 2:
                         i += 1
@@ -98,16 +121,17 @@ class player:  # player class creates a player with its own board and ship locat
                             shipSunk += 1
                             break
 
-        if shipSunk == 5: 
-            print("You Lost!") #if 5 ships have been sunk you lost!
+        if shipSunk == 5:
+            print("You Lost!")  # if 5 ships have been sunk you lost!
             self.playerWon = True
 
-
     def createShip(self):  # function to populate the player board
-        try:  # try catch to reset the board incase the player enters overlapping ships
-            for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
+        for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
+            backupBoard = self.board
+            try:  # try catch to reset the board incase the player enters overlapping ships
                 self.printPlayerMap()
                 if ship.isCreated() == False:
+                    ship.setCreated()
                     ShipCollumnStart = int(
                         input("Enter Collumn For Start Position For %s: " % (ship.getName())))
                     ShipRowStart = int(
@@ -169,8 +193,84 @@ class player:  # player class creates a player with its own board and ship locat
 
                 else:
                     continue
-        except Exception:
-            print("Invalid Ship Location")
-            self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-            self.createShip()
+            except Exception:
+                print("Invalid Ship Location, Please try again")
+                self.board = backupBoard
+                ship.setCreated()
+                self.createShip()
+
+    
+    def botPopulateBoard(self):  # function to populate the bot board
+        playerBot = bot.bot()
+        for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
+            backupBoard = self.board
+            try:  # try catch to reset the board incase the player enters overlapping ships
+    
+                if ship.setCreated() == False:
+                    boardLoc = playerBot.generateBoard(ship.getSize())
+                    print(boardLoc["collumn"])
+                    ShipCollumnStart = boardLoc["collumn"]
+                    ShipRowStart = boardLoc["row"]
+                    shipOrientation = boardLoc["orientation"]
+                    if shipOrientation.lower() == "up":  # check ship orientation, then populate the map based on the input
+                        ShipRowEnd = ShipRowStart - ship.getSize()
+                        ShipCollumnEnd = ShipCollumnStart
+                        i = ShipRowStart
+                        while i > ShipRowEnd:
+                            if self.board[i][ShipCollumnEnd] == 4:
+                                raise Exception
+                            else:
+                                self.board[i][ShipCollumnEnd] = 4
+                                i = i-1
+                                ship.setCreated()
+
+                    elif shipOrientation.lower() == "down":
+                        ShipRowEnd = ShipRowStart + ship.getSize()
+                        ShipCollumnEnd = ShipCollumnStart
+                        i = ShipRowStart
+                        while i < ShipRowEnd:
+                            if self.board[i][ShipCollumnEnd] == 4:
+                                raise Exception
+                            else:
+                                self.board[i][ShipCollumnEnd] = 4
+                                i = i+1
+                                ship.setCreated()
+
+                    elif shipOrientation.lower() == "left":
+                        ShipRowEnd = ShipRowStart
+                        ShipCollumnEnd = ShipCollumnStart - ship.getSize()
+                        i = ShipCollumnStart
+                        while i > ShipCollumnEnd:
+                            if self.board[ShipRowEnd][i] == 4:
+                                raise Exception
+                            else:
+                                self.board[ShipRowEnd][i] = 4
+                                i = i-1
+                                ship.setCreated()
+
+                    elif shipOrientation.lower() == "right":
+                        ShipRowEnd = ShipRowStart
+                        ShipCollumnEnd = ShipCollumnStart + ship.getSize()
+                        i = ShipCollumnStart
+                        while i < ShipCollumnEnd:
+                            if self.board[ShipRowEnd][i] == 4:
+                                raise Exception
+                            else:
+                                self.board[ShipRowEnd][i] = 4
+                                i = i+1
+                                ship.setCreated()
+
+                    else:  # for invalid ship orientation warn the player and then reset the function
+                        print("Invalid Ship Location")
+                        botPopulateBoard()
+
+                    # set ship location inside of ships.py
+                    ship.setShipPos(ShipRowStart, ShipCollumnStart,
+                                    ShipRowEnd, ShipCollumnEnd)
+                    ship.printLocation()  # print ship location for user to see
+
+                else:
+                    continue
+            except Exception:
+                self.board = backupBoard
+                self.botPopulateBoard()
