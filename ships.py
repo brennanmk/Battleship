@@ -45,6 +45,9 @@ class carrier(ship): #carrier is a class with the parent class ship
     def isCreated(self): #function to determine if the ship has been created
         return self.created
 
+    def setCreated(self): #function to determine if the ship has been created
+        not self.created
+
     def getStartColumn(self):
         return self.ShipCollumnStart
 
@@ -87,6 +90,9 @@ class battleShip(ship): #battleShip is a class with the parent class ship
     def isCreated(self): #function to determine if the ship has been created
         return self.created
     
+    def setCreated(self): #function to determine if the ship has been created
+        not self.created
+    
     def getStartColumn(self):
         return self.ShipCollumnStart
 
@@ -128,6 +134,9 @@ class cruiser(ship): #cruiser is a class with the parent class ship
 
     def isCreated(self): #function to return the created boolean
         return self.created
+    
+    def setCreated(self): #function to determine if the ship has been created
+        not self.created
 
     def getStartColumn(self):
         return self.ShipCollumnStart
@@ -170,6 +179,9 @@ class submarine(ship): #submarine is a class with the parent class ship
 
     def isCreated(self): #function to return the created boolean
         return self.created
+    
+    def setCreated(self): #function to determine if the ship has been created
+        not self.created
 
     def getStartColumn(self):
         return self.ShipCollumnStart
@@ -212,6 +224,9 @@ class destroyer(ship): #destroyer is a class with the parent class ship
 
     def isCreated(self): #function to return created boolean value
         return self.created
+    
+    def setCreated(self): #function to determine if the ship has been created
+        not self.created
 
     def getStartColumn(self):
         return self.ShipCollumnStart
