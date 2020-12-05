@@ -6,6 +6,5 @@ def main():
    bot.printPlayerMap()
    
 
-
 if __name__=="__main__":
    main()

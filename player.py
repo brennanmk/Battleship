@@ -1,6 +1,7 @@
 import ships
 import bot
 
+
 class player:  # player class creates a player with its own board and ship locations
     def __init__(self):  # blank constructor for player class
         # setup default board
@@ -129,8 +130,8 @@ class player:  # player class creates a player with its own board and ship locat
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
             backupBoard = self.board
             try:  # try catch to reset the board incase the player enters overlapping ships
-                self.printPlayerMap()
                 if ship.isCreated() == False:
+                    self.printPlayerMap()
                     ship.setCreated()
                     ShipCollumnStart = int(
                         input("Enter Collumn For Start Position For %s: " % (ship.getName())))
@@ -138,53 +139,70 @@ class player:  # player class creates a player with its own board and ship locat
                         input("Enter Row For Start Posistion For %s : " % (ship.getName())))
                     shipOrientation = input(
                         "Enter Orientation for %s (up down left or right): " % (ship.getName()))
+
                     if shipOrientation.lower() == "up":  # check ship orientation, then populate the map based on the input
                         ShipRowEnd = ShipRowStart - ship.getSize()
+                        if ShipRowEnd < 0:
+                            raise Exception
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
-                        while i > ShipRowEnd:
-                            if self.board[i][ShipCollumnEnd] == 4:
+                        k = i
+                        while k > ShipRowEnd:
+                            if self.board[k][ShipCollumnEnd] == 4:
                                 raise Exception
-                            else:
-                                self.board[i][ShipCollumnEnd] = 4
-                                i = i-1
+                            k += 1
+                        while i > ShipRowEnd:
+                            self.board[i][ShipCollumnEnd] = 4
+                            i = i-1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart + ship.getSize()
+                        if ShipRowEnd > 9:
+                            raise Exception
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
-                        while i < ShipRowEnd:
-                            if self.board[i][ShipCollumnEnd] == 4:
+                        k = i
+                        while k < ShipRowEnd:
+                            if self.board[k][ShipCollumnEnd] == 4:
                                 raise Exception
-                            else:
-                                self.board[i][ShipCollumnEnd] = 4
-                                i = i+1
+                            k += 1
+                        while i < ShipRowEnd:
+                            self.board[i][ShipCollumnEnd] = 4
+                            i = i+1
 
                     elif shipOrientation.lower() == "left":
-                        ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart - ship.getSize()
+                        if ShipCollumnEnd < 0:
+                            raise Exception
+                        ShipRowEnd = ShipRowStart
                         i = ShipCollumnStart
-                        while i > ShipCollumnEnd:
-                            if self.board[ShipRowEnd][i] == 4:
+                        k = i
+                        while k > ShipCollumnEnd:
+                            if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            else:
-                                self.board[ShipRowEnd][i] = 4
-                                i = i-1
+                            k += 1
+                        while i > ShipCollumnEnd:
+                            self.board[ShipRowEnd][i] = 4
+                            i = i-1
 
                     elif shipOrientation.lower() == "right":
-                        ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart + ship.getSize()
+                        if ShipCollumnEnd > 9:
+                            raise Exception
+                        ShipRowEnd = ShipRowStart
                         i = ShipCollumnStart
-                        while i < ShipCollumnEnd:
-                            if self.board[ShipRowEnd][i] == 4:
+                        k = i
+                        while k < ShipCollumnEnd:
+                            if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            else:
-                                self.board[ShipRowEnd][i] = 4
-                                i = i+1
+                            k += 1
+                        while i < ShipCollumnEnd:
+                            self.board[ShipRowEnd][i] = 4
+                            i = i+1
 
                     else:  # for invalid ship orientation warn the player and then reset the function
                         print("Invalid Ship Location")
-                        createShip()
+                        self.createShip()
 
                     # set ship location inside of ships.py
                     ship.setShipPos(ShipRowStart, ShipCollumnStart,
@@ -199,71 +217,82 @@ class player:  # player class creates a player with its own board and ship locat
                 ship.setCreated()
                 self.createShip()
 
-    
     def botPopulateBoard(self):  # function to populate the bot board
         playerBot = bot.bot()
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
             backupBoard = self.board
             try:  # try catch to reset the board incase the player enters overlapping ships
-                
                 if ship.isCreated() == False:
-                    
+                    ship.setCreated()
+                    # Return a dictonary that consists of "column", "row", and "orientation"
                     boardLoc = playerBot.generateBoard()
-                    print(boardLoc["collumn"])
                     ShipCollumnStart = boardLoc["collumn"]
                     ShipRowStart = boardLoc["row"]
                     shipOrientation = boardLoc["orientation"]
+
                     if shipOrientation.lower() == "up":  # check ship orientation, then populate the map based on the input
                         ShipRowEnd = ShipRowStart - ship.getSize()
+                        if ShipRowEnd < 0:
+                            raise Exception
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
-                        while i > ShipRowEnd:
-                            if self.board[i][ShipCollumnEnd] == 4:
+                        k = i
+                        while k > ShipRowEnd:
+                            if self.board[k][ShipCollumnEnd] == 4:
                                 raise Exception
-                            else:
-                                self.board[i][ShipCollumnEnd] = 4
-                                i = i-1
-                                ship.setCreated()
+                            k += 1
+                        while i > ShipRowEnd:
+                            self.board[i][ShipCollumnEnd] = 4
+                            i = i-1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart + ship.getSize()
+                        if ShipRowEnd > 9:
+                            raise Exception
                         ShipCollumnEnd = ShipCollumnStart
                         i = ShipRowStart
-                        while i < ShipRowEnd:
-                            if self.board[i][ShipCollumnEnd] == 4:
+                        k = i
+                        while k < ShipRowEnd:
+                            if self.board[k][ShipCollumnEnd] == 4:
                                 raise Exception
-                            else:
-                                self.board[i][ShipCollumnEnd] = 4
-                                i = i+1
-                                ship.setCreated()
+                            k += 1
+                        while i < ShipRowEnd:
+                            self.board[i][ShipCollumnEnd] = 4
+                            i = i+1
 
                     elif shipOrientation.lower() == "left":
-                        ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart - ship.getSize()
+                        if ShipCollumnEnd < 0:
+                            raise Exception
+                        ShipRowEnd = ShipRowStart
                         i = ShipCollumnStart
-                        while i > ShipCollumnEnd:
-                            if self.board[ShipRowEnd][i] == 4:
+                        k = i
+                        while k > ShipCollumnEnd:
+                            if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            else:
-                                self.board[ShipRowEnd][i] = 4
-                                i = i-1
-                                ship.setCreated()
+                            k += 1
+                        while i > ShipCollumnEnd:
+                            self.board[ShipRowEnd][i] = 4
+                            i = i-1
 
                     elif shipOrientation.lower() == "right":
-                        ShipRowEnd = ShipRowStart
                         ShipCollumnEnd = ShipCollumnStart + ship.getSize()
+                        if ShipCollumnEnd > 9:
+                            raise Exception
+                        ShipRowEnd = ShipRowStart
                         i = ShipCollumnStart
-                        while i < ShipCollumnEnd:
-                            if self.board[ShipRowEnd][i] == 4:
+                        k = i
+                        while k < ShipCollumnEnd:
+                            if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            else:
-                                self.board[ShipRowEnd][i] = 4
-                                i = i+1
-                                ship.setCreated()
+                            k += 1
+                        while i < ShipCollumnEnd:
+                            self.board[ShipRowEnd][i] = 4
+                            i = i+1
 
                     else:  # for invalid ship orientation warn the player and then reset the function
                         print("Invalid Ship Location")
-                        boardLoc = playerBot.generateBoard()
+                        self.botPopulateBoard()
 
                     # set ship location inside of ships.py
                     ship.setShipPos(ShipRowStart, ShipCollumnStart,
@@ -274,4 +303,5 @@ class player:  # player class creates a player with its own board and ship locat
                     continue
             except Exception:
                 self.board = backupBoard
-                boardLoc = playerBot.generateBoard()
+                ship.setCreated()
+                self.botPopulateBoard()

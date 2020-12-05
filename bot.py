@@ -12,8 +12,6 @@ class bot: #parent ship function
       orentations = ["up", "down", "left", "right"]
 
       i = random.randint(1,5) # Randomly choosing between 5 region
-
-      print(i)
       
       # 3x4 top left region
       if i == 1:
