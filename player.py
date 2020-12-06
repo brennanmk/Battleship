@@ -16,6 +16,8 @@ class player:  # player class creates a player with its own board and ship locat
         self.playerArsenal.append(ships.cruiser(0, 0, 0, 0))
         self.playerArsenal.append(ships.submarine(0, 0, 0, 0))
         self.playerArsenal.append(ships.destroyer(0, 0, 0, 0))
+        self.hitBot = bot.bot()
+
 
     def getPlayerWon(self):
         return self.playerWon
@@ -67,6 +69,9 @@ class player:  # player class creates a player with its own board and ship locat
             else:  # make sure the player has not attacked the spot previously
                 print("You already attacked this spot")
                 self.hit()
+            
+            if(self.isSunk()):
+                print("You sunk a ship!")
 
         except Exception:
             print("Your value entered is out of bounds")
@@ -74,24 +79,22 @@ class player:  # player class creates a player with its own board and ship locat
 
     def botHit(self):  # function that enemy player calls to hit a posistion on the players board
         # ask enemy to enter a location to attack
-        playerBot = bot.bot()
-        row = playerBot.generateHit()["row"]
-        collumn = bot.bot.generateHit()["collumn"]
+        row = self.hitBot.generateHit()["row"]
+        collumn = self.hitBot.generateHit()["collumn"]
         try:  # try catch to determine if the player strikes an out of bounds spot
             # check to see if the posistion hit is housing a ship
             if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
-                print("Enemy hit you ship")
+                self.hitBot.setLastHit(collumn, row, self.isSunk)
             elif self.board[row][collumn] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
                 self.board[row][collumn] = 1
-                print("Enemy missed your ships!")
+                self.hitBot.setNextHitDirection
             else:  # make sure the player has not attacked the spot previously
                 self.hit()
 
         except Exception:
-            print("Your value entered is out of bounds")
             self.hit()
 
     def isSunk(self):
@@ -111,16 +114,14 @@ class player:  # player class creates a player with its own board and ship locat
                         if (RowStart + i) == RowEnd:
                             shipSunk += 1
                             ship.setSunk(True)
-                            print(ship.getName() + " is sunk!")
-                            break
+                            return True
                 else:
                     while self.board[RowStart][CollumnStart + i] == 2:
                         i += 1
                         if (CollumnStart + i) == CollumnEnd:
-                            print(ship.getName() + " is sunk!")
                             ship.setSunk(True)
                             shipSunk += 1
-                            break
+                            return True
 
         if shipSunk == 5:
             print("You Lost!")  # if 5 ships have been sunk you lost!
