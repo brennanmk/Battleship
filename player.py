@@ -17,7 +17,7 @@ class player:  # player class creates a player with its own board and ship locat
         self.playerArsenal.append(ships.submarine(0, 0, 0, 0))
         self.playerArsenal.append(ships.destroyer(0, 0, 0, 0))
         self.hitBot = bot.bot()
-
+        self.shipSunk = 0
 
     def getPlayerWon(self):
         return self.playerWon
@@ -79,51 +79,59 @@ class player:  # player class creates a player with its own board and ship locat
 
     def botHit(self):  # function that enemy player calls to hit a posistion on the players board
         # ask enemy to enter a location to attack
-        row = self.hitBot.generateHit()["row"]
-        collumn = self.hitBot.generateHit()["collumn"]
+        hit = self.hitBot.generateHit()
+        row = hit["row"]
+        collumn = hit["collumn"]
         try:  # try catch to determine if the player strikes an out of bounds spot
             # check to see if the posistion hit is housing a ship
             if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
-                self.hitBot.setLastHit(collumn, row, self.isSunk)
+                self.hitBot.setLastHit(collumn, row, self.isSunk())
             elif self.board[row][collumn] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
                 self.board[row][collumn] = 1
-                self.hitBot.setNextHitDirection
+                self.hitBot.setNextHitDirection()
             else:  # make sure the player has not attacked the spot previously
-                self.hit()
+                self.hitBot.setNextHitDirection()
+                self.botHit()
 
         except Exception:
-            self.hit()
+            self.hitBot.setNextHitDirection()
+            self.botHit()
 
     def isSunk(self):
-        shipSunk = 0
-
         for ship in self.playerArsenal:
-            if not ship.getSunk():
+            if ship.getSunk() == False:
                 CollumnStart = ship.getStartColumn()
                 CollumnEnd = ship.getEndColumn()
                 RowStart = ship.getStartRow()
                 RowEnd = ship.getEndRow()
                 i = 0
 
-                if (CollumnStart - CollumnEnd) == 0:
-                    while self.board[RowStart + i][CollumnStart] == 2:
-                        i += 1
-                        if (RowStart + i) == RowEnd:
+                if CollumnStart == CollumnEnd:
+                    while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart]:
+                        i = i + 1
+                        if (RowStart + i or RowStart - i) == RowEnd:
                             shipSunk += 1
                             ship.setSunk(True)
-                            return True
-                else:
-                    while self.board[RowStart][CollumnStart + i] == 2:
-                        i += 1
-                        if (CollumnStart + i) == CollumnEnd:
-                            ship.setSunk(True)
-                            shipSunk += 1
+                            print("SUNK")
+
                             return True
 
-        if shipSunk == 5:
+                else:
+                    while self.board[RowStart][CollumnStart + i] == 2 or self.board[RowStart][CollumnStart - i] == 2:
+                        i = 1 + 1
+                        if CollumnStart + i == CollumnEnd or CollumnStart - i == CollumnEnd:
+                            ship.setSunk(True)
+                            shipSunk += 1
+                            print("SHUNK")
+                            return True
+
+        print("NOTSUNK")
+        return False
+
+        if self.shipSunk == 5:
             print("You Lost!")  # if 5 ships have been sunk you lost!
             self.playerWon = True
 
