@@ -3,7 +3,7 @@ import bot
 
 
 class player:  # player class creates a player with its own board and ship locations
-    def __init__(self):  # blank constructor for player class
+    def __init__(self, name):  # blank constructor for player class
         # setup default board
         self.playerWon = False
         self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -18,6 +18,7 @@ class player:  # player class creates a player with its own board and ship locat
         self.playerArsenal.append(ships.destroyer(0, 0, 0, 0))
         self.hitBot = bot.bot()
         self.shipSunk = 0
+        self.playerName = name
 
     def getPlayerWon(self):
         return self.playerWon
@@ -87,23 +88,16 @@ class player:  # player class creates a player with its own board and ship locat
             if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
-                checkSunk = self.isSunk()
-                self.hitBot.setLastHit(collumn, row, checkSunk)
-                if checkSunk:
-                    self.hitBot.resetFirstHit()
-
+                self.isSunk()
+                if(self.hitBot.getHit() == False):
+                    self.hitBot.setHit(row, collumn)
             elif self.board[row][collumn] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
                 self.board[row][collumn] = 1
-                self.hitBot.setNextHitDirection()
             else:  # make sure the player has not attacked the spot previously
-                if self.board[row][collumn] == 2:
-                    self.botHit()
-                self.hitBot.setNextHitDirection()
                 self.botHit()
 
         except Exception:
-            self.hitBot.setNextHitDirection()
             self.botHit()
 
     def isSunk(self):
@@ -117,41 +111,30 @@ class player:  # player class creates a player with its own board and ship locat
 
                 if CollumnStart == CollumnEnd:
                     while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart] == 2:
-                        print("hank coo")
-
                         i = i + 1
-                        print("i: %s size: %s" % (i, ship.getSize()))
-
                         if i == ship.getSize():
-                            print("SUNK")
                             self.shipSunk += 1
                             ship.setSunk(True)
-                            print("SHUNK")
-
-
+                            if self.shipSunk == 5:
+                                print("%s Won!" % (self.playerName))  # if 5 ships have been sunk you lost!
+                                self.playerWon = True
                             return True
 
                 else:
                     while self.board[RowStart][CollumnStart + i] == 2 or self.board[RowStart][CollumnStart - i] == 2:
-                        print("here")
                         i = i + 1
-                        print("i: %s size: %s" % (i, ship.getSize()))
                         if i == ship.getSize():
-                            print("SHUNK")
                             ship.setSunk(True)
-                            print("SHUNK")
-
                             self.shipSunk += 1
-                            
+                            if self.shipSunk == 5:
+                                print("%s Won!" % (self.playerName))  # if 5 ships have been sunk you lost!
+                                self.playerWon = True              
                             return True
                         
 
-        print("NOTSUNK")
         return False
 
-        if self.shipSunk == 5:
-            print("You Lost!")  # if 5 ships have been sunk you lost!
-            self.playerWon = True
+
 
     def createShip(self):  # function to populate the player board
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map

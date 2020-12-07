@@ -2,46 +2,19 @@ import random
 
 class bot: #parent ship function
    def __init__(self):
-      self.lastHitRow = -1
-      self.lastHitCollumn = -1
-      self.hitDirection = "down"
-      self.firstHitRow = -1
-      self.firstHitCollumn = -1
-      self.directionIndex = 0
+      self.storeHitRow = -1
+      self.storeHitCollumn = -1
+      self.surround = 0
 
-   def setLastHit(self, collumn, row, isSunk):
-      self.lastHitRow = row
-      self.lastHitCollumn = collumn
-      if self.firstHitCollumn == -1:
-         self.firstHitCollumn = collumn
-         self.firstHitRow = row
+   def setHit(self, row, collumn):
+      self.storeHitRow = row
+      self.storeHitCollumn = collumn
 
-      if isSunk == True:
-         self.lastHitRow = -1
-         self.lastHitCollumn = -1
-
-   def getLastHit(self):
-      if self.lastHitRow == -1:
-         return True
-      else:
+   def getHit(self):
+      if self.storeHitRow == -1:
          return False
-
-   def resetFirstHit(self):
-      self.firstHitRow = -1
-      self.firstHitCollumn = -1
-      self.directionIndex = 0
-
-   def setNextHitDirection(self):
-      self.directionIndex += 1
-      orentations = ["up", "down", "left", "right"]
-      for index, orientation in enumerate(orentations):
-         if orientation == self.hitDirection:
-            if index == 3:
-               self.hitDirection = orentations[0]
-               break
-            else:
-               self.hitDirection = orentations[index + 1]
-               break
+      else:
+         return True
 
    def generateBoard(self):
       RowA = 0
@@ -105,40 +78,37 @@ class bot: #parent ship function
       return shipLoc
 
    def generateHit(self):
-      if self.directionIndex == 3:
-         self.directionIndex = 0
-         if self.hitDirection == "down":
-            row = self.firstHitRow + 1
-            collumn = self.firstHitCollumn
-         elif self.hitDirection == "up":
-            row = self.firstHitRow - 1
-            collumn = self.firstHitCollumn
-         elif self.hitDirection == "left":
-            row = self.firstHitRow
-            collumn = self.firstHitCollumn - 1
-         elif self.hitDirection == "right":
-            row = self.firstHitRow
-            collumn = self.firstHitCollumn + 1
-      elif self.lastHitRow != -1 and self.lastHitCollumn != -1: 
-         if self.hitDirection == "down":
-            row = self.lastHitRow + 1
-            collumn = self.lastHitCollumn
-         elif self.hitDirection == "up":
-            row = self.lastHitRow - 1
-            collumn = self.lastHitCollumn
-         elif self.hitDirection == "left":
-            row = self.lastHitRow
-            collumn = self.lastHitCollumn - 1
-         elif self.hitDirection == "right":
-            row = self.lastHitRow
-            collumn = self.lastHitCollumn + 1
-      else: 
+      if self.storeHitCollumn == -1:
          row = random.randint(0,9)
          if row % 2 == 0:
             collumn = random.randrange(0,10,2)
          else:
             collumn = random.randrange(1,10,2)
 
-      hit = {"row" : row, "collumn" : collumn}
+      elif self.surround != 4:
+         if self.surround == 0:
+            row = self.storeHitRow - 1
+            collumn = self.storeHitCollumn
+         elif self.surround == 1:
+            row = self.storeHitRow + 1
+            collumn = self.storeHitCollumn
+         elif self.surround == 2:
+            row = self.storeHitRow
+            collumn = self.storeHitCollumn - 1
+         else:
+            row = self.storeHitRow
+            collumn = self.storeHitCollumn + 1
+         self.surround += 1
+      else:
+         self.surround = 0
+         self.storeHitRow = -1
+         self.storeHitCollumn = -1
+         row = random.randint(0,9)
+         if row % 2 == 0:
+            collumn = random.randrange(0,10,2)
+         else:
+            collumn = random.randrange(1,10,2)
 
+
+      hit = {"row" : row, "collumn" : collumn}
       return hit
