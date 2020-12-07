@@ -87,12 +87,18 @@ class player:  # player class creates a player with its own board and ship locat
             if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
-                self.hitBot.setLastHit(collumn, row, self.isSunk())
+                checkSunk = self.isSunk()
+                self.hitBot.setLastHit(collumn, row, checkSunk)
+                if checkSunk:
+                    self.hitBot.resetFirstHit()
+
             elif self.board[row][collumn] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
                 self.board[row][collumn] = 1
                 self.hitBot.setNextHitDirection()
             else:  # make sure the player has not attacked the spot previously
+                if self.board[row][collumn] == 2:
+                    self.botHit()
                 self.hitBot.setNextHitDirection()
                 self.botHit()
 
@@ -110,23 +116,35 @@ class player:  # player class creates a player with its own board and ship locat
                 i = 0
 
                 if CollumnStart == CollumnEnd:
-                    while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart]:
+                    while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart] == 2:
+                        print("hank coo")
+
                         i = i + 1
-                        if (RowStart + i or RowStart - i) == RowEnd:
-                            shipSunk += 1
-                            ship.setSunk(True)
+                        print("i: %s size: %s" % (i, ship.getSize()))
+
+                        if i == ship.getSize():
                             print("SUNK")
+                            self.shipSunk += 1
+                            ship.setSunk(True)
+                            print("SHUNK")
+
 
                             return True
 
                 else:
                     while self.board[RowStart][CollumnStart + i] == 2 or self.board[RowStart][CollumnStart - i] == 2:
-                        i = 1 + 1
-                        if CollumnStart + i == CollumnEnd or CollumnStart - i == CollumnEnd:
-                            ship.setSunk(True)
-                            shipSunk += 1
+                        print("here")
+                        i = i + 1
+                        print("i: %s size: %s" % (i, ship.getSize()))
+                        if i == ship.getSize():
                             print("SHUNK")
+                            ship.setSunk(True)
+                            print("SHUNK")
+
+                            self.shipSunk += 1
+                            
                             return True
+                        
 
         print("NOTSUNK")
         return False

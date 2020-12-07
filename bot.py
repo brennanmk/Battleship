@@ -5,17 +5,34 @@ class bot: #parent ship function
       self.lastHitRow = -1
       self.lastHitCollumn = -1
       self.hitDirection = "down"
+      self.firstHitRow = -1
+      self.firstHitCollumn = -1
+      self.directionIndex = 0
 
    def setLastHit(self, collumn, row, isSunk):
       self.lastHitRow = row
       self.lastHitCollumn = collumn
+      if self.firstHitCollumn == -1:
+         self.firstHitCollumn = collumn
+         self.firstHitRow = row
 
       if isSunk == True:
          self.lastHitRow = -1
          self.lastHitCollumn = -1
 
+   def getLastHit(self):
+      if self.lastHitRow == -1:
+         return True
+      else:
+         return False
+
+   def resetFirstHit(self):
+      self.firstHitRow = -1
+      self.firstHitCollumn = -1
+      self.directionIndex = 0
 
    def setNextHitDirection(self):
+      self.directionIndex += 1
       orentations = ["up", "down", "left", "right"]
       for index, orientation in enumerate(orentations):
          if orientation == self.hitDirection:
@@ -88,7 +105,21 @@ class bot: #parent ship function
       return shipLoc
 
    def generateHit(self):
-      if self.lastHitRow != -1 and self.lastHitCollumn != -1: 
+      if self.directionIndex == 3:
+         self.directionIndex = 0
+         if self.hitDirection == "down":
+            row = self.firstHitRow + 1
+            collumn = self.firstHitCollumn
+         elif self.hitDirection == "up":
+            row = self.firstHitRow - 1
+            collumn = self.firstHitCollumn
+         elif self.hitDirection == "left":
+            row = self.firstHitRow
+            collumn = self.firstHitCollumn - 1
+         elif self.hitDirection == "right":
+            row = self.firstHitRow
+            collumn = self.firstHitCollumn + 1
+      elif self.lastHitRow != -1 and self.lastHitCollumn != -1: 
          if self.hitDirection == "down":
             row = self.lastHitRow + 1
             collumn = self.lastHitCollumn

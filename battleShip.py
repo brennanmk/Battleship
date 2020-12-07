@@ -5,10 +5,11 @@ def main():
    bot2 = player()
    bot1.botPopulateBoard()
    bot2.botPopulateBoard()
+   
 
    while bot1.getPlayerWon() == False and bot2.getPlayerWon() == False:
-      bot1.botHit()  
-      bot1.printEnemyMap()
+      bot1.botHit() 
+      bot1.printPlayerMap() 
 
 if __name__=="__main__":
    main()
