@@ -3,7 +3,7 @@ import bot
 
 
 class player:  # player class creates a player with its own board and ship locations
-    def __init__(self):  # blank constructor for player class
+    def __init__(self, name):  # blank constructor for player class
         # setup default board
         self.playerWon = False
         self.board = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -16,6 +16,9 @@ class player:  # player class creates a player with its own board and ship locat
         self.playerArsenal.append(ships.cruiser(0, 0, 0, 0))
         self.playerArsenal.append(ships.submarine(0, 0, 0, 0))
         self.playerArsenal.append(ships.destroyer(0, 0, 0, 0))
+        self.hitBot = bot.bot()
+        self.shipSunk = 0
+        self.playerName = name
 
     def getPlayerWon(self):
         return self.playerWon
@@ -67,6 +70,9 @@ class player:  # player class creates a player with its own board and ship locat
             else:  # make sure the player has not attacked the spot previously
                 print("You already attacked this spot")
                 self.hit()
+            
+            if(self.isSunk()):
+                print("You sunk a ship!")
 
         except Exception:
             print("Your value entered is out of bounds")
@@ -74,57 +80,61 @@ class player:  # player class creates a player with its own board and ship locat
 
     def botHit(self):  # function that enemy player calls to hit a posistion on the players board
         # ask enemy to enter a location to attack
-        playerBot = bot.bot()
-        row = playerBot.generateHit()["row"]
-        collumn = bot.bot.generateHit()["collumn"]
+        hit = self.hitBot.generateHit()
+        row = hit["row"]
+        collumn = hit["collumn"]
         try:  # try catch to determine if the player strikes an out of bounds spot
             # check to see if the posistion hit is housing a ship
             if self.board[row][collumn] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
                 self.board[row][collumn] = 2
-                print("Enemy hit you ship")
+                self.isSunk()
+                if(self.hitBot.getHit() == False):
+                    self.hitBot.setHit(row, collumn)
             elif self.board[row][collumn] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
                 self.board[row][collumn] = 1
-                print("Enemy missed your ships!")
             else:  # make sure the player has not attacked the spot previously
-                self.hit()
+                self.botHit()
 
         except Exception:
-            print("Your value entered is out of bounds")
-            self.hit()
+            self.botHit()
 
     def isSunk(self):
-        shipSunk = 0
-
         for ship in self.playerArsenal:
-            if not ship.getSunk():
+            if ship.getSunk() == False:
                 CollumnStart = ship.getStartColumn()
                 CollumnEnd = ship.getEndColumn()
                 RowStart = ship.getStartRow()
                 RowEnd = ship.getEndRow()
                 i = 0
 
-                if (CollumnStart - CollumnEnd) == 0:
-                    while self.board[RowStart + i][CollumnStart] == 2:
-                        i += 1
-                        if (RowStart + i) == RowEnd:
-                            shipSunk += 1
+                if CollumnStart == CollumnEnd:
+                    while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart] == 2:
+                        i = i + 1
+                        if i == ship.getSize():
+                            self.shipSunk += 1
                             ship.setSunk(True)
-                            print(ship.getName() + " is sunk!")
-                            break
-                else:
-                    while self.board[RowStart][CollumnStart + i] == 2:
-                        i += 1
-                        if (CollumnStart + i) == CollumnEnd:
-                            print(ship.getName() + " is sunk!")
-                            ship.setSunk(True)
-                            shipSunk += 1
-                            break
+                            if self.shipSunk == 5:
+                                print("%s Won!" % (self.playerName))  # if 5 ships have been sunk you lost!
+                                self.playerWon = True
+                            return True
 
-        if shipSunk == 5:
-            print("You Lost!")  # if 5 ships have been sunk you lost!
-            self.playerWon = True
+                else:
+                    while self.board[RowStart][CollumnStart + i] == 2 or self.board[RowStart][CollumnStart - i] == 2:
+                        i = i + 1
+                        if i == ship.getSize():
+                            ship.setSunk(True)
+                            self.shipSunk += 1
+                            if self.shipSunk == 5:
+                                print("%s Won!" % (self.playerName))  # if 5 ships have been sunk you lost!
+                                self.playerWon = True              
+                            return True
+                        
+
+        return False
+
+
 
     def createShip(self):  # function to populate the player board
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map

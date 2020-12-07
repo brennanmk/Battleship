@@ -2,7 +2,19 @@ import random
 
 class bot: #parent ship function
    def __init__(self):
-      self.something = 0
+      self.storeHitRow = -1
+      self.storeHitCollumn = -1
+      self.surround = 0
+
+   def setHit(self, row, collumn):
+      self.storeHitRow = row
+      self.storeHitCollumn = collumn
+
+   def getHit(self):
+      if self.storeHitRow == -1:
+         return False
+      else:
+         return True
 
    def generateBoard(self):
       RowA = 0
@@ -66,8 +78,37 @@ class bot: #parent ship function
       return shipLoc
 
    def generateHit(self):
-      row = random.randint(0, 9)
-      collumn = random.randint(0, 9)
-      hit = {"row" : row, "collumn" : collumn}
+      if self.storeHitCollumn == -1:
+         row = random.randint(0,9)
+         if row % 2 == 0:
+            collumn = random.randrange(0,10,2)
+         else:
+            collumn = random.randrange(1,10,2)
 
+      elif self.surround != 4:
+         if self.surround == 0:
+            row = self.storeHitRow - 1
+            collumn = self.storeHitCollumn
+         elif self.surround == 1:
+            row = self.storeHitRow + 1
+            collumn = self.storeHitCollumn
+         elif self.surround == 2:
+            row = self.storeHitRow
+            collumn = self.storeHitCollumn - 1
+         else:
+            row = self.storeHitRow
+            collumn = self.storeHitCollumn + 1
+         self.surround += 1
+      else:
+         self.surround = 0
+         self.storeHitRow = -1
+         self.storeHitCollumn = -1
+         row = random.randint(0,9)
+         if row % 2 == 0:
+            collumn = random.randrange(0,10,2)
+         else:
+            collumn = random.randrange(1,10,2)
+
+
+      hit = {"row" : row, "collumn" : collumn}
       return hit
