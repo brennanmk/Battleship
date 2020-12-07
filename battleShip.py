@@ -14,7 +14,6 @@ def main():
       bot.hit() 
       if bot.getPlayerWon() == False:
          player1.botHit()
-      turnCount += 1
 
 if __name__=="__main__":
    main()
