@@ -1,6 +1,6 @@
 import random 
 
-class bot: #parent ship function
+class bot: #Bot class written by Hank Pham & Brennan Miller-Klugman
    def __init__(self):
       self.storeHitRow = -1
       self.storeHitcolumn = -1
@@ -19,7 +19,7 @@ class bot: #parent ship function
          return True
 
    # create ships and populate bot's board
-   def generateBoard(self):
+   def generateBoard(self): #Written by Hank Pham
       RowA = 0
       RowB =0
       columnA = 0
@@ -82,7 +82,7 @@ class bot: #parent ship function
       return shipLoc
 
 
-   def generateHit(self):
+   def generateHit(self): #Written by Brennan Miller-Klugman
 
       # if there is no hit
       if self.storeHitcolumn == -1:

@@ -1,4 +1,4 @@
-class ship:  # parent ship function
+class ship:  # parent ship class, written by Hank Pham & Brennan Miller-Klugman
     # constructor takesin ship name as a parameter
     def __init__(self, shipName, RowStart, columnStart, RowEnd, columnEnd, isSunk=False, creatingShip=False):
         self.name = shipName

@@ -1,6 +1,6 @@
 from player import player
 
-def main():
+def main(): #Written by Brennan Miller-Klugman
    name = input("Enter Player Name: ")    # Ask player to input a name(to be displayed upon winning)
    player1 = player("HANK THE BOT")       # Creating player instance for player1 and bot
    bot = player(name)               

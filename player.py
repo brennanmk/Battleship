@@ -2,7 +2,7 @@ import ships
 import bot
 
 
-class player:  # player class creates a player with its own board and ship locations
+class player:  # player class creates a player with its own board and ship locations, Written by Hank Pham & Brennan Miller-Klugman
     def __init__(self, name):  # blank constructor for player class
         # setup default board
         self.playerWon = False
@@ -20,11 +20,11 @@ class player:  # player class creates a player with its own board and ship locat
         self.shipSunk = 0
         self.playerName = name
 
-    def getPlayerWon(self):
+    def getPlayerWon(self): #Written by Hank Pham & Brennan Miller-Klugman
         return self.playerWon
 
     # function to print the map visible to the enemy player (ship locations not included)
-    def printEnemyMap(self):
+    def printEnemyMap(self): #Written by Brennan Miller-Klugman
         print("\n-----------------------------------------")
         for row in self.board:
             for columns in row:
@@ -38,7 +38,7 @@ class player:  # player class creates a player with its own board and ship locat
             print("-----------------------------------------")
 
     # function to print the map visible to the enemy player (ship locations included)
-    def printPlayerMap(self):
+    def printPlayerMap(self): #Written by Brennan Miller-Klugman
         print("\n-----------------------------------------")
         for row in self.board:
             for columns in row:
@@ -53,7 +53,7 @@ class player:  # player class creates a player with its own board and ship locat
             print("|")
             print("-----------------------------------------")
 
-    def hit(self):  # function that enemy player calls to hit a posistion on the players board
+    def hit(self):  # function that enemy player calls to hit a posistion on the players board, Written by Hank Pham & Brennan Miller-Klugman
         # ask enemy to enter a location to attack
         row = int(input("Enter Row To Hit: "))
         column = int(input("Enter column To Hit: "))
@@ -78,7 +78,7 @@ class player:  # player class creates a player with its own board and ship locat
             print("Your value entered is out of bounds")
             self.hit()
 
-    def botHit(self):  # function that enemy player calls to hit a posistion on the players board
+    def botHit(self):  # function that enemy player calls to hit a posistion on the players board, Written by Hank Pham & Brennan Miller-Klugman
         # ask enemy to enter a location to attack
         hit = self.hitBot.generateHit()
         row = hit["row"]
@@ -100,7 +100,7 @@ class player:  # player class creates a player with its own board and ship locat
         except Exception:
             self.botHit()
 
-    def isSunk(self):
+    def isSunk(self): #Written by Hank Pham
         for ship in self.playerArsenal:
             if ship.getSunk() == False:
                 columnStart = ship.getStartColumn()
@@ -134,9 +134,7 @@ class player:  # player class creates a player with its own board and ship locat
 
         return False
 
-
-
-    def createShip(self):  # function to populate the player board
+    def createShip(self):  # function to populate the player board, Written by Hank Pham, and Brennan Miller-Klugman
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
             backupBoard = self.board
             try:  # try catch to reset the board incase the player enters overlapping ships
@@ -227,7 +225,7 @@ class player:  # player class creates a player with its own board and ship locat
                 ship.setCreated()
                 self.createShip()
 
-    def botPopulateBoard(self):  # function to populate the bot board
+    def botPopulateBoard(self):  # function to populate the bot board, Written by Hank Pham, and Brennan Miller-Klugman
         playerBot = bot.bot()
         for ship in self.playerArsenal:  # for each ship in the player arsenal, prompt for a ship location and populate the ship on the map
             backupBoard = self.board
