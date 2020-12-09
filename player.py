@@ -25,7 +25,10 @@ class player:  # player class creates a player with its own board and ship locat
 
     # function to print the map visible to the enemy player (ship locations not included)
     def printEnemyMap(self): #Written by Brennan Miller-Klugman
-        print("\n-----------------------------------------")
+        print("\n  0   1   2   3   4   5   6   7   8   9")
+        print("-----------------------------------------")
+        counter = 0
+
         for row in self.board:
             for columns in row:
                 if columns == 1:
@@ -34,12 +37,15 @@ class player:  # player class creates a player with its own board and ship locat
                     print("%s !" % ("|"), end=" ")
                 else:
                     print("%s  " % ("|"), end=" ")
-            print("|")
+            print("| %s" % counter)
             print("-----------------------------------------")
+            counter += 1
 
     # function to print the map visible to the enemy player (ship locations included)
     def printPlayerMap(self): #Written by Brennan Miller-Klugman
-        print("\n-----------------------------------------")
+        print("\n  0   1   2   3   4   5   6   7   8   9")
+        print("-----------------------------------------")
+        counter = 0
         for row in self.board:
             for columns in row:
                 if columns == 1:
@@ -50,8 +56,9 @@ class player:  # player class creates a player with its own board and ship locat
                     print("%s -" % ("|"), end=" ")
                 else:
                     print("%s  " % ("|"), end=" ")
-            print("|")
+            print("| %s" % counter)
             print("-----------------------------------------")
+            counter += 1
 
     def hit(self):  # function that enemy player calls to hit a posistion on the players board, Written by Hank Pham & Brennan Miller-Klugman
         # ask enemy to enter a location to attack
@@ -158,7 +165,7 @@ class player:  # player class creates a player with its own board and ship locat
                         while k > ShipRowEnd:
                             if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
-                            k += 1
+                            k -= 1
                         while i > ShipRowEnd:
                             self.board[i][ShipcolumnEnd] = 4
                             i = i-1
@@ -188,7 +195,7 @@ class player:  # player class creates a player with its own board and ship locat
                         while k > ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            k += 1
+                            k -= 1
                         while i > ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i-1
@@ -248,7 +255,7 @@ class player:  # player class creates a player with its own board and ship locat
                         while k > ShipRowEnd:
                             if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
-                            k += 1
+                            k -= 1
                         while i > ShipRowEnd:
                             self.board[i][ShipcolumnEnd] = 4
                             i = i-1
@@ -278,7 +285,7 @@ class player:  # player class creates a player with its own board and ship locat
                         while k > ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
-                            k += 1
+                            k -= 1
                         while i > ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i-1
