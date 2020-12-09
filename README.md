@@ -13,4 +13,4 @@ After cloning the repository, navigate to and exectute battleShip.py to play (py
 A video outling the project, and featuring gameplay can be found at https://drive.google.com/file/d/1V8KFtSdzzrSqGrcjsaf85BIN_5NLliII/view?usp=sharing
 
 # Note
-https://docs.python.org was used as a referance when writing this project
+https://docs.python.org was used as a reference when writing this project
