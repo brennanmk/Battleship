@@ -27,10 +27,10 @@ class player:  # player class creates a player with its own board and ship locat
     def printEnemyMap(self):
         print("\n-----------------------------------------")
         for row in self.board:
-            for collumns in row:
-                if collumns == 1:
+            for columns in row:
+                if columns == 1:
                     print("%s X" % ("|"), end=" ")
-                elif collumns == 2:
+                elif columns == 2:
                     print("%s !" % ("|"), end=" ")
                 else:
                     print("%s  " % ("|"), end=" ")
@@ -41,12 +41,12 @@ class player:  # player class creates a player with its own board and ship locat
     def printPlayerMap(self):
         print("\n-----------------------------------------")
         for row in self.board:
-            for collumns in row:
-                if collumns == 1:
+            for columns in row:
+                if columns == 1:
                     print("%s X" % ("|"), end=" ")
-                elif collumns == 2:
+                elif columns == 2:
                     print("%s !" % ("|"), end=" ")
-                elif collumns == 4:
+                elif columns == 4:
                     print("%s -" % ("|"), end=" ")
                 else:
                     print("%s  " % ("|"), end=" ")
@@ -56,16 +56,16 @@ class player:  # player class creates a player with its own board and ship locat
     def hit(self):  # function that enemy player calls to hit a posistion on the players board
         # ask enemy to enter a location to attack
         row = int(input("Enter Row To Hit: "))
-        collumn = int(input("Enter Collumn To Hit: "))
+        column = int(input("Enter column To Hit: "))
         try:  # try catch to determine if the player strikes an out of bounds spot
             # check to see if the posistion hit is housing a ship
-            if self.board[row][collumn] == 4:
+            if self.board[row][column] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
-                self.board[row][collumn] = 2
+                self.board[row][column] = 2
                 print("Enemy ship hit!")
-            elif self.board[row][collumn] == 0:
+            elif self.board[row][column] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
-                self.board[row][collumn] = 1
+                self.board[row][column] = 1
                 print("Missed enemy target!")
             else:  # make sure the player has not attacked the spot previously
                 print("You already attacked this spot")
@@ -82,18 +82,18 @@ class player:  # player class creates a player with its own board and ship locat
         # ask enemy to enter a location to attack
         hit = self.hitBot.generateHit()
         row = hit["row"]
-        collumn = hit["collumn"]
+        column = hit["column"]
         try:  # try catch to determine if the player strikes an out of bounds spot
             # check to see if the posistion hit is housing a ship
-            if self.board[row][collumn] == 4:
+            if self.board[row][column] == 4:
                 # set the board posistion to 2 if the enemy hit a ship
-                self.board[row][collumn] = 2
+                self.board[row][column] = 2
                 self.isSunk()
                 if(self.hitBot.getHit() == False):
-                    self.hitBot.setHit(row, collumn)
-            elif self.board[row][collumn] == 0:
+                    self.hitBot.setHit(row, column)
+            elif self.board[row][column] == 0:
                 # set the board posistion to 1 if the enemy missed a ship
-                self.board[row][collumn] = 1
+                self.board[row][column] = 1
             else:  # make sure the player has not attacked the spot previously
                 self.botHit()
 
@@ -103,14 +103,14 @@ class player:  # player class creates a player with its own board and ship locat
     def isSunk(self):
         for ship in self.playerArsenal:
             if ship.getSunk() == False:
-                CollumnStart = ship.getStartColumn()
-                CollumnEnd = ship.getEndColumn()
+                columnStart = ship.getStartColumn()
+                columnEnd = ship.getEndColumn()
                 RowStart = ship.getStartRow()
                 RowEnd = ship.getEndRow()
                 i = 0
 
-                if CollumnStart == CollumnEnd:
-                    while self.board[RowStart + i][CollumnStart] == 2 or self.board[RowStart - i][CollumnStart] == 2:
+                if columnStart == columnEnd:
+                    while self.board[RowStart + i][columnStart] == 2 or self.board[RowStart - i][columnStart] == 2:
                         i = i + 1
                         if i == ship.getSize():
                             self.shipSunk += 1
@@ -121,7 +121,7 @@ class player:  # player class creates a player with its own board and ship locat
                             return True
 
                 else:
-                    while self.board[RowStart][CollumnStart + i] == 2 or self.board[RowStart][CollumnStart - i] == 2:
+                    while self.board[RowStart][columnStart + i] == 2 or self.board[RowStart][columnStart - i] == 2:
                         i = i + 1
                         if i == ship.getSize():
                             ship.setSunk(True)
@@ -143,8 +143,8 @@ class player:  # player class creates a player with its own board and ship locat
                 if ship.isCreated() == False:
                     self.printPlayerMap()
                     ship.setCreated()
-                    ShipCollumnStart = int(
-                        input("Enter Collumn For Start Position For %s: " % (ship.getName())))
+                    ShipcolumnStart = int(
+                        input("Enter column For Start Position For %s: " % (ship.getName())))
                     ShipRowStart = int(
                         input("Enter Row For Start Posistion For %s : " % (ship.getName())))
                     shipOrientation = input(
@@ -154,59 +154,59 @@ class player:  # player class creates a player with its own board and ship locat
                         ShipRowEnd = ShipRowStart - ship.getSize()
                         if ShipRowEnd < 0:
                             raise Exception
-                        ShipCollumnEnd = ShipCollumnStart
+                        ShipcolumnEnd = ShipcolumnStart
                         i = ShipRowStart
                         k = i
                         while k > ShipRowEnd:
-                            if self.board[k][ShipCollumnEnd] == 4:
+                            if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
                             k += 1
                         while i > ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
+                            self.board[i][ShipcolumnEnd] = 4
                             i = i-1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart + ship.getSize()
                         if ShipRowEnd > 9:
                             raise Exception
-                        ShipCollumnEnd = ShipCollumnStart
+                        ShipcolumnEnd = ShipcolumnStart
                         i = ShipRowStart
                         k = i
                         while k < ShipRowEnd:
-                            if self.board[k][ShipCollumnEnd] == 4:
+                            if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
                             k += 1
                         while i < ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
+                            self.board[i][ShipcolumnEnd] = 4
                             i = i+1
 
                     elif shipOrientation.lower() == "left":
-                        ShipCollumnEnd = ShipCollumnStart - ship.getSize()
-                        if ShipCollumnEnd < 0:
+                        ShipcolumnEnd = ShipcolumnStart - ship.getSize()
+                        if ShipcolumnEnd < 0:
                             raise Exception
                         ShipRowEnd = ShipRowStart
-                        i = ShipCollumnStart
+                        i = ShipcolumnStart
                         k = i
-                        while k > ShipCollumnEnd:
+                        while k > ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
                             k += 1
-                        while i > ShipCollumnEnd:
+                        while i > ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i-1
 
                     elif shipOrientation.lower() == "right":
-                        ShipCollumnEnd = ShipCollumnStart + ship.getSize()
-                        if ShipCollumnEnd > 9:
+                        ShipcolumnEnd = ShipcolumnStart + ship.getSize()
+                        if ShipcolumnEnd > 9:
                             raise Exception
                         ShipRowEnd = ShipRowStart
-                        i = ShipCollumnStart
+                        i = ShipcolumnStart
                         k = i
-                        while k < ShipCollumnEnd:
+                        while k < ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
                             k += 1
-                        while i < ShipCollumnEnd:
+                        while i < ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i+1
 
@@ -215,8 +215,8 @@ class player:  # player class creates a player with its own board and ship locat
                         self.createShip()
 
                     # set ship location inside of ships.py
-                    ship.setShipPos(ShipRowStart, ShipCollumnStart,
-                                    ShipRowEnd, ShipCollumnEnd)
+                    ship.setShipPos(ShipRowStart, ShipcolumnStart,
+                                    ShipRowEnd, ShipcolumnEnd)
                     ship.printLocation()  # print ship location for user to see
 
                 else:
@@ -236,7 +236,7 @@ class player:  # player class creates a player with its own board and ship locat
                     ship.setCreated()
                     # Return a dictonary that consists of "column", "row", and "orientation"
                     boardLoc = playerBot.generateBoard()
-                    ShipCollumnStart = boardLoc["collumn"]
+                    ShipcolumnStart = boardLoc["column"]
                     ShipRowStart = boardLoc["row"]
                     shipOrientation = boardLoc["orientation"]
 
@@ -244,59 +244,59 @@ class player:  # player class creates a player with its own board and ship locat
                         ShipRowEnd = ShipRowStart - ship.getSize()
                         if ShipRowEnd < 0:
                             raise Exception
-                        ShipCollumnEnd = ShipCollumnStart
+                        ShipcolumnEnd = ShipcolumnStart
                         i = ShipRowStart
                         k = i
                         while k > ShipRowEnd:
-                            if self.board[k][ShipCollumnEnd] == 4:
+                            if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
                             k += 1
                         while i > ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
+                            self.board[i][ShipcolumnEnd] = 4
                             i = i-1
 
                     elif shipOrientation.lower() == "down":
                         ShipRowEnd = ShipRowStart + ship.getSize()
                         if ShipRowEnd > 9:
                             raise Exception
-                        ShipCollumnEnd = ShipCollumnStart
+                        ShipcolumnEnd = ShipcolumnStart
                         i = ShipRowStart
                         k = i
                         while k < ShipRowEnd:
-                            if self.board[k][ShipCollumnEnd] == 4:
+                            if self.board[k][ShipcolumnEnd] == 4:
                                 raise Exception
                             k += 1
                         while i < ShipRowEnd:
-                            self.board[i][ShipCollumnEnd] = 4
+                            self.board[i][ShipcolumnEnd] = 4
                             i = i+1
 
                     elif shipOrientation.lower() == "left":
-                        ShipCollumnEnd = ShipCollumnStart - ship.getSize()
-                        if ShipCollumnEnd < 0:
+                        ShipcolumnEnd = ShipcolumnStart - ship.getSize()
+                        if ShipcolumnEnd < 0:
                             raise Exception
                         ShipRowEnd = ShipRowStart
-                        i = ShipCollumnStart
+                        i = ShipcolumnStart
                         k = i
-                        while k > ShipCollumnEnd:
+                        while k > ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
                             k += 1
-                        while i > ShipCollumnEnd:
+                        while i > ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i-1
 
                     elif shipOrientation.lower() == "right":
-                        ShipCollumnEnd = ShipCollumnStart + ship.getSize()
-                        if ShipCollumnEnd > 9:
+                        ShipcolumnEnd = ShipcolumnStart + ship.getSize()
+                        if ShipcolumnEnd > 9:
                             raise Exception
                         ShipRowEnd = ShipRowStart
-                        i = ShipCollumnStart
+                        i = ShipcolumnStart
                         k = i
-                        while k < ShipCollumnEnd:
+                        while k < ShipcolumnEnd:
                             if self.board[ShipRowEnd][k] == 4:
                                 raise Exception
                             k += 1
-                        while i < ShipCollumnEnd:
+                        while i < ShipcolumnEnd:
                             self.board[ShipRowEnd][i] = 4
                             i = i+1
 
@@ -305,8 +305,8 @@ class player:  # player class creates a player with its own board and ship locat
                         self.botPopulateBoard()
 
                     # set ship location inside of ships.py
-                    ship.setShipPos(ShipRowStart, ShipCollumnStart,
-                                    ShipRowEnd, ShipCollumnEnd)
+                    ship.setShipPos(ShipRowStart, ShipcolumnStart,
+                                    ShipRowEnd, ShipcolumnEnd)
                     ship.printLocation()  # print ship location for user to see
 
                 else:
